@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="ja"><head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>北名古屋市345億円の使い方</title>
+<title>345億円使ってみよう！</title>
 <style>
 body{font-family:sans-serif;margin:0;padding:16px;background:#fdf2f2;color:#4a1f1f;}
 h1{text-align:center;color:#b03a2e;}
@@ -25,12 +25,12 @@ th{background:#f9d6d6;}
 </style>
 </head><body>
 
-<h1>あなたが主役！伊藤だいすけと考える北名古屋市 市民のための345億円</h1>
+<h1>あなたが主役！　伊藤だいすけと考える北名古屋市 市民のための345億円</h1>
 
 <div id="allocator">
 <script>
 const cats=["edu","bus","welfare","gender","env","infra","admin","debt","industry","other","free","jaga"];
-const labels=["教育","公共交通","福祉","ジェンダー","環境","土木","行政","公債費","産業","その他","自由に使う","じゃがりこ購入費"];
+const labels=["教育","公共交通","福祉","ジェンダー","環境","土木","行政","公債費","産業","その他","私が自由に使う","じゃがりこ購入費"];
 const colors=["#3498db","#e74c3c","#2ecc71","#f1c40f","#9b59b6","#1abc9c","#e67e22","#34495e","#16a085","#95a5a6","#7f8c8d","#f39c12"];
 const reality=[10.9,8.5,47.2,2,8,8.5,7,5,2.9,0,0,0];
 
@@ -49,7 +49,7 @@ addSlider("admin","行政運営",24);
 addSlider("debt","公債費（借金返済）",17);
 addSlider("industry","産業・経済",10);
 addSlider("other","その他",10);
-addSlider("free","私の自由に使う",5);
+addSlider("free","私が自由に使う",5);
 addSlider("jaga","じゃがりこ購入費",4);
 </script>
 
@@ -123,7 +123,7 @@ else if(p[ji]>=10)c.push("じゃがりこ大量購入計画、議会で確実に
 else c.push("じゃがりこは自腹で買おう。税金の使い道としてはギリギリアウトです。");
 }
 
-/* 自由に使う */
+/* 私が自由に使う */
 if(p[fi]>0){
 if(p[fi]>=20)c.push("税金の私物化どころじゃない！北名古屋市があなたの財布になっとる。無茶しよるな〜。");
 else if(p[fi]>=10)c.push("自由に使いすぎ！議会がざわつくやつです。");
