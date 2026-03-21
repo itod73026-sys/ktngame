@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>北名古屋市345億円予算バトル</title>
+<style>
+body{font-family:sans-serif;margin:0;padding:16px;background:#fdf2f2;color:#4a1f1f;}
+h1{text-align:center;color:#b03a2e;}
+.category{margin:1rem 0;background:#fff5f5;padding:12px;border-radius:8px;border:1px solid #f2c6c6;}
+label{font-weight:bold;color:#a83232;}
+input[type=range]{width:100%;accent-color:#e74c3c;height:32px;}
+input[type=range]::-webkit-slider-thumb{width:28px;height:28px;}
+.value{text-align:right;font-weight:bold;color:#c0392b;}
+#total{text-align:center;font-size:1.3rem;margin:1rem 0;color:#a83232;}
+#total.red{color:#e74c3c;}
+button{background:#c0392b;color:#fff;border:none;padding:18px;font-size:1.2rem;border-radius:8px;width:100%;margin:1rem 0;}
+button:hover{background:#a93226;}
+#result{display:none;}
+svg{width:100%;max-width:300px;margin:0 auto;display:block;}
+table{width:100%;border-collapse:collapse;margin:1rem 0;display:block;overflow-x:auto;white-space:nowrap;}
+th,td{border:1px solid #f2c6c6;padding:6px;text-align:center;}
+th{background:#f9d6d6;}
+.comment-box{background:#ffecec;padding:16px;border-radius:8px;margin:1rem 0;border:1px solid #f2c6c6;}
+.reality-box{background:#fff3cd;padding:16px;border-radius:8px;margin:1rem 0;}
+.alert-box{background:#ffebee;padding:12px;border-radius:8px;margin:1rem 0;color:#c62828;font-weight:bold;text-align:center;}
+@media(max-width:480px){svg{max-width:220px;}}
+</style>
+</head><body>
+
+<h1>北名古屋市345億円予算バトル</h1>
+
+<div id="allocator">
+<script>
+const cats=["edu","bus","welfare","gender","env","infra","admin","debt","industry","other","free","jaga"];
+const labels=["教育","公共交通","福祉","ジェンダー","環境","土木","行政","公債費","産業","その他","自由に使う","じゃがりこ購入費"];
+const colors=["#3498db","#e74c3c","#2ecc71","#f1c40f","#9b59b6","#1abc9c","#e67e22","#34495e","#16a085","#95a5a6","#7f8c8d","#f39c12"];
+const reality=[10.9,8.5,47.2,2,8,8.5,7,5,2.9,0,0,0];
+
+function addSlider(id,label,val){
+document.write(`<div class='category'><label>${label}</label>
+<input type='range' id='${id}' min='0' max='345' value='${val}'/>
+<div class='value' id='${id}Val'>${val}億円</div></div>`);
+}
+addSlider("edu","教育・学校関連",30);
+addSlider("bus","公共交通",20);
+addSlider("welfare","福祉・子育て支援",160);
+addSlider("gender","ジェンダー平等推進",7);
+addSlider("env","環境・ゴミ処理",28);
+addSlider("infra","土木・インフラ",30);
+addSlider("admin","行政運営",24);
+addSlider("debt","公債費（借金返済）",17);
+addSlider("industry","産業・経済",10);
+addSlider("other","その他",10);
+addSlider("free","私の自由に使う",5);
+addSlider("jaga","じゃがりこ購入費",4);
+</script>
+
+<div id="total">合計: <span id="sum">345</span>億円</div>
+<button onclick="submitBudget()">決定して結果を見る</button>
+</div>
+
+<div id="result">
+<h2>あなたの予算配分</h2>
+<svg id="pie" viewBox="0 0 32 32"></svg>
+<div id="budget-status" class="alert-box" style="display:none;"></div>
+<h2>比較（%）</h2><div id="comparison"></div>
+
+<h2>現実の北名古屋市の予算</h2>
+<div class="reality-box">
+教育10.9% / 公共交通8.5% / 福祉47.2% / ジェンダー2% / 環境8% / 土木8.5% / 行政7% / 公債費5% / 産業2.9%
+</div>
+
+<h2>予算アドバイザーの一言</h2>
+<div class="comment-box" id="joke-comment"></div>
+<button onclick="location.reload()">もう一度やる</button>
+</div>
+
+<script>
+function updateSum(){
+let s=0;cats.forEach(c=>s+=+document.getElementById(c).value);
+document.getElementById("sum").textContent=s;
+document.getElementById("total").className=(s===345?"":"red");
+}
+cats.forEach(c=>{
+let el=document.getElementById(c),v=document.getElementById(c+"Val");
+el.addEventListener("input",()=>{v.textContent=el.value+"億円";updateSum();});
+});
+
+function getPoint(t){let a=2*Math.PI*t-Math.PI/2;return[16+16*Math.cos(a),16+16*Math.sin(a)];}
+
+function drawPie(p){
+let svg=document.getElementById("pie");svg.innerHTML="";let cum=0;
+p.forEach((v,i)=>{
+let s=getPoint(cum);cum+=v/100;let e=getPoint(cum),lg=v>50?1:0;
+let d=`M16 16 L${s[0]} ${s[1]} A16 16 0 ${lg} 1 ${e[0]} ${e[1]} Z`;
+let path=document.createElementNS("http://www.w3.org/2000/svg","path");
+path.setAttribute("d",d);path.setAttribute("fill",colors[i]);svg.appendChild(path);
+});
+}
+
+function submitBudget(){
+let vals=cats.map(c=>+document.getElementById(c).value);
+let total=vals.reduce((a,b)=>a+b,0);
+let st=document.getElementById("budget-status");
+if(total>345){alert("お金が足りません！");return;}
+st.style.display=(total<345?"block":"none");
+if(total<345)st.innerHTML=`${345-total}億円の余りがあります`;
+
+let p=vals.map(v=>Math.round(v/345*100));
+drawPie(p);
+
+/* 比較表 */
+let h="<table><tr><th>項目</th><th>あなた</th><th>現実</th></tr>";
+labels.forEach((l,i)=>h+=`<tr><td>${l}</td><td>${p[i]}%</td><td>${reality[i]}%</td></tr>`);
+document.getElementById("comparison").innerHTML=h+"</table>";
+
+/* コメント */
+let c=[];
+let fi=10,ji=11;
+
+/* じゃがりこ */
+if(p[ji]>0){
+if(p[ji]>=20)c.push("じゃがりこに20%！？ 北名古屋市がカルビーに買収されたんか？ 無茶しよるな〜。");
+else if(p[ji]>=10)c.push("じゃがりこ大量購入計画、議会で確実に炎上します。");
+else c.push("じゃがりこは自腹で買おう。税金の使い道としてはギリギリアウトです。");
+}
+
+/* 自由に使う */
+if(p[fi]>0){
+if(p[fi]>=20)c.push("税金の私物化どころじゃない！北名古屋市があなたの財布になっとる。無茶しよるな〜。");
+else if(p[fi]>=10)c.push("自由に使いすぎ！議会がざわつくやつです。");
+else c.push("税金の私物化はいかんよ。ちょっとだけなら…いや、ダメです。");
+}
+
+/* 極端配分 */
+if(c.length===0){
+if(p[2]>=60)c.push("福祉をとても重視した配分ですね。街の安心感がぐっと高まりそうです。");
+else if(p[0]>=40)c.push("教育にしっかり投資しています。未来への本気度が伝わってきます。");
+else if(p[3]>=20)c.push("ジェンダー平等を強く推進する配分です。誰にとっても暮らしやすい街を目指す姿勢が見えます。");
+else if(p[1]>=30)c.push("公共交通を手厚くしています。移動のしやすさが大きく改善しそうです。");
+else if(p[4]>=30)c.push("環境政策に力を入れています。未来志向の街づくりですね。");
+else if(p[5]>=30)c.push("土木・インフラに大投資！道路がピカピカになりそうです。");
+else if(p[6]>=30)c.push("行政運営にここまで！？市役所が超豪華庁舎になる未来が見えます。");
+else if(p[7]>=30)c.push("公債費に全振り！借金返済に本気すぎるストイックな配分です。");
+else if(p[8]>=30)c.push("産業・経済に全集中！北名古屋市が経済都市として覚醒しそうです。");
+}
+
+/* メリハリ */
+if(c.length===0 && Math.max(...p)-Math.min(...p)>=25)
+c.push("メリハリのある配分です。優先順位がはっきりしていて分かりやすいですね。");
+
+/* A案距離 */
+let diff=p.reduce((a,b,i)=>a+Math.abs(b-reality[i]),0)/p.length;
+let rc=(diff<=6?"現実の北名古屋市の予算構成にかなり近い配分です。":
+diff<=12?"現実の北名古屋市の予算と部分的に似ていますが、独自の方向性もあります。":
+"現実の北名古屋市とは異なる方向性の配分です。あなたの価値観が強く反映されています。");
+
+/* バランス */
+if(c.length===0)c.push("バランスよく配分されています。現実の行政より柔軟で、住民説明会でも拍手が起きそうです。");
+
+document.getElementById("joke-comment").innerHTML=rc+"<br><br>"+c.join("<br>");
+document.getElementById("allocator").style.display="none";
+document.getElementById("result").style.display="block";
+}
+
+updateSum();
+</script>
+
+</body></html>
+
