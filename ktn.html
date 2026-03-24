@@ -29,11 +29,17 @@
 }
 
 /* スマホでは縦並びにする */
+/* スマホでは動画をさらに小さくする */
 @media(max-width: 600px){
-  .intro-video-side, .intro-text {
+  .intro-video-side {
     flex: 1 1 100%;
     max-width: none;
-    order: unset;
+    text-align: center;
+  }
+
+  .intro-video-side video {
+    width: 45%;   /* ← スマホでは画面幅の45%（半分以下） */
+    max-width: 120px; /* さらに小さくなりすぎないように上限も設定 */
   }
 }
 
