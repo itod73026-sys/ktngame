@@ -445,6 +445,7 @@ function submitBudget(){
 
  document.getElementById("joke-comment").innerHTML =
   realityComment + "<br><br>" + commentList.join("<br>");
+} // ← ★ submitBudget() を閉じる本物のカッコ（あなたのコードでは消えている）
 
 document.getElementById("game").style.display = "none";
 document.getElementById("result").style.display = "block";
@@ -459,9 +460,9 @@ setTimeout(() => {
 
   const box = document.getElementById("share-url");
   if (box) box.value = shareURL;
-}, 150);  // ← ここまでが submitBudget() の中
+}, 150);
 
-}  // ← ★これが submitBudget() の最後の1個だけのカッコ
+} // ← ★ これが submitBudget() の最後の1個だけのカッコ
 </script>
 </body>
 </html>
