@@ -60,10 +60,19 @@ video{width:100%;border-radius:8px;margin-top:8px;background:#000;}
 .cat-body{padding:8px 12px 12px;display:none;}
 input[type=range]{width:100%;accent-color:#e74c3c;height:32px;}
 input[type=range]::-webkit-slider-thumb{width:26px;height:26px;}
-@media(max-width: 600px){
-  input[type=range]::-webkit-slider-thumb {
-    width: 42px;   /* ← スマホではさらに大きく */
-    height: 42px;
+/* ===== スマホ誤操作防止 ===== */
+@media(max-width:600px){
+
+  /* スライダーがタップで飛ばないようにする */
+  input[type=range]{
+    touch-action: none;
+    height: 36px;
+  }
+
+  /* つまみを少し大きくして掴みやすく */
+  input[type=range]::-webkit-slider-thumb{
+    width: 34px;
+    height: 34px;
   }
 }
 
