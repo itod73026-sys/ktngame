@@ -60,6 +60,13 @@ video{width:100%;border-radius:8px;margin-top:8px;background:#000;}
 .cat-body{padding:8px 12px 12px;display:none;}
 input[type=range]{width:100%;accent-color:#e74c3c;height:32px;}
 input[type=range]::-webkit-slider-thumb{width:26px;height:26px;}
+@media(max-width: 600px){
+  input[type=range]::-webkit-slider-thumb {
+    width: 42px;   /* ← スマホではさらに大きく */
+    height: 42px;
+  }
+}
+
 #total{text-align:center;font-size:1.1rem;margin:0.8rem 0;color:#a83232;}
 #total.red{color:#e74c3c;}
 #remainBox{margin:0.8rem 0;}
@@ -174,7 +181,7 @@ const categories = [
   {id:"admin",   label:"行政運営"},
   {id:"debt",    label:"公債費（借金返済）"},
   {id:"industry",label:"産業・経済"},
-  {id:"other",   label:"その他"},
+  {id:"other",   label:"その他(地域防災費など)"},
   {id:"free",    label:"プレイヤーが好き勝手に使う"},
   {id:"jaga",    label:"じゃがりこ購入費"}
 ];
