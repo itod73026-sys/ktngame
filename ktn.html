@@ -446,6 +446,9 @@ function submitBudget(){
  document.getElementById("joke-comment").innerHTML =
   realityComment + "<br><br>" + commentList.join("<br>");
 
+document.getElementById("joke-comment").innerHTML =
+  realityComment + "<br><br>" + commentList.join("<br>");
+
 document.getElementById("game").style.display = "none";
 document.getElementById("result").style.display = "block";
 
@@ -459,7 +462,8 @@ setTimeout(() => {
   document.getElementById("share-url").value = shareURL;
 }, 150);
 
-} // ← ★ これが submitBudget() の最後の1個だけのカッコ
+} // ← ★ submitBudget() の最後の1個だけのカッコ（ここで終わり）
+
 </script>
 
 </body>
