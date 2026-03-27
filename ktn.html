@@ -177,18 +177,45 @@ th{background:#f9d6d6;}
 <div id="share-section" style="margin-top:20px;">
   <input id="share-url" type="text" readonly style="width:100%;margin-bottom:10px;">
 
-  <button id="share-x" class="sns-btn sns-x" type="button">X（Twitter）</button>
-  <button id="share-line" class="sns-btn sns-line" type="button">LINE</button>
-  <button id="share-facebook" class="sns-btn sns-facebook" type="button">Facebook</button>
-  <button id="share-bluesky" class="sns-btn sns-bluesky" type="button">Bluesky</button>
+<button id="share-x" class="sns-btn sns-x" type="button">X（Twitter）</button>
+<button id="share-line" class="sns-btn sns-line" type="button">LINE</button>
+<button id="share-facebook" class="sns-btn sns-facebook" type="button">Facebook</button>
+<button id="share-bluesky" class="sns-btn sns-bluesky" type="button">Bluesky</button>
 </div>
 
-    <button onclick="restartGame()">もう一度やる</button>
+<button onclick="restartGame()">もう一度やる</button>
   </div>
 </div>
 
 <script>
+
+/* ★★★ restartGame() はここに1つだけ置く ★★★ */
+function restartGame(){
+
+  // スライダーを作り直す（これが最重要）
+  buildSliders();
+
+  // 全スライダー0に戻す
+  categories.forEach(c=>{
+    const el = document.getElementById(c.id);
+    if(el){ el.value = 0; }
+    const v = document.getElementById(c.id+"Val");
+    if(v){ v.textContent = "0 億円"; }
+  });
+
+  updateSum();
+
+  document.getElementById("result").style.display = "none";
+  document.getElementById("result").style.pointerEvents = "none";
+}
+
+
+/* ★★★ ここまで ★★★ */
+
+
 const MAX_BUDGET = 345;
+
+
 
 const categories = [
   {id:"edu",     label:"教育・学校関連"},
@@ -231,6 +258,7 @@ function startGame(){
 }
 
 function restartGame(){
+
   // 全スライダー0に戻す
   categories.forEach(c=>{
     const el = document.getElementById(c.id);
@@ -238,9 +266,18 @@ function restartGame(){
     const v = document.getElementById(c.id+"Val");
     if(v){ v.textContent = "0 億円"; }
   });
+
   updateSum();
-  document.getElementById("result").style.display = "none";
-  document.getElementById("game").style.display = "block";
+
+  // 結果画面を閉じる
+  const result = document.getElementById("result");
+  result.style.display = "none";
+  result.style.pointerEvents = "none";
+
+  // ゲーム画面を再表示
+  const game = document.getElementById("game");
+  game.style.display = "block";
+  game.style.pointerEvents = "auto";
 }
 
 function buildSliders(){
@@ -255,7 +292,7 @@ function buildSliders(){
         <span class="cat-value" id="${c.id}Val">0 億円</span>
       </div>
       <div class="cat-body" id="${c.id}Body">
-        <input type="range" id="${c.id}" min="0" max="${MAX_BUDGET}" value="0">
+        <input type="range" id="${c.id}" min="0" max="${MAX_BUDGET}" value="0" oninput="updateSum()">
       </div>
     `;
     wrap.appendChild(div);
@@ -449,12 +486,10 @@ document.getElementById("joke-comment").innerHTML =
 document.getElementById("game").style.display = "none";
 document.getElementById("result").style.display = "block";
 
-
 /* ★★★ スマホ透明残り対策（正しい貼り位置はここだけ） ★★★ */
 document.getElementById("game").style.pointerEvents = "none";
 document.getElementById("result").style.pointerEvents = "auto";
 /* ★★★ ここまで ★★★ */
-
 
 setTimeout(() => {
   const params = new URLSearchParams();
@@ -468,10 +503,12 @@ setTimeout(() => {
 } // submitBudget() の終わり
 
 /* ★ ② 共有ボタンにイベントを登録（スマホで確実に発火） ★ */
-document.getElementById("share-x").addEventListener("click", shareToX);
-document.getElementById("share-line").addEventListener("click", shareToLINE);
-document.getElementById("share-facebook").addEventListener("click", shareToFacebook);
-document.getElementById("share-bluesky").addEventListener("click", shareToBluesky);
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("share-x").addEventListener("click", shareToX);
+  document.getElementById("share-line").addEventListener("click", shareToLINE);
+  document.getElementById("share-facebook").addEventListener("click", shareToFacebook);
+  document.getElementById("share-bluesky").addEventListener("click", shareToBluesky);
+});
 
 
 
