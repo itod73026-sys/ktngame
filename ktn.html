@@ -444,10 +444,20 @@ function submitBudget(){
   }
 
   document.getElementById("joke-comment").innerHTML =
-    realityComment + "<br><br>" + commentList.join("<br>");
+  realityComment + "<br><br>" + commentList.join("<br>");
 
-  document.getElementById("game").style.display = "none";
-  document.getElementById("result").style.display = "block";
+document.getElementById("game").style.display = "none";
+document.getElementById("result").style.display = "block";
+
+
+/* ★★★ スマホ透明残り対策（正しい貼り位置はここ） ★★★ */
+const game = document.getElementById("game");
+game.style.visibility = "hidden";
+game.style.pointerEvents = "none";
+
+const result = document.getElementById("result");
+result.style.visibility = "visible";
+result.style.pointerEvents = "auto";
 
   /* ★ スマホ対応：共有URL生成（必ず submitBudget() の中に置く） ★ */
   setTimeout(() => {
